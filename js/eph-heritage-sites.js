@@ -463,7 +463,7 @@ function updateFeatureCounts(totalValidRecords) {
   let searchInput = document.getElementById('search-input');
   if (searchInput) {
     // Tulis angka yang dikirimkan ke kotak pencarian
-    searchInput.placeholder = `Menampilkan ${totalValidRecords} hasil (atau ketik di sini untuk mencari)`;
+    searchInput.placeholder = `Menampilkan ${totalValidRecords} hasil (atau ketik masjid yang dicari)`;
   }
 }
 
