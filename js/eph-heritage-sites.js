@@ -564,9 +564,30 @@ function applyIntersectionFilter(preventZoom = false) {
     // === TAMBALAN UTAMA 1: BARIS INI YANG SEBELUMNYA HILANG ===
     return matchRegion && matchFeature && matchSearch && matchUsia;
 
-  }).sort((a, b) => {
-    // LOGIKA PENGURUTAN (Tinggal Abjad Saja)
+}).sort((a, b) => {
+    
+    // === KODE BARU: Pengurutan Khusus untuk Opsi > 50 Tahun ===
+    // Jika dropdown disetel ke filter usia 50 tahun, urutkan dari yang paling tua
+    if (currentUsiaFilter === 'usia_50') {
+      let aHasYear = !!a.rawTahunBerdiri;
+      let bHasYear = !!b.rawTahunBerdiri;
+
+      if (aHasYear && bHasYear) {
+        // String ISO ("1800", "1920") bisa langsung dibandingkan.
+        // localeCompare akan menaruh angka terkecil (tahun tertua) di urutan atas.
+        return a.rawTahunBerdiri.localeCompare(b.rawTahunBerdiri);
+      } else if (aHasYear && !bHasYear) {
+        return -1; // Prioritaskan yang punya data tahun di atas
+      } else if (!aHasYear && bHasYear) {
+        return 1;  // Singkirkan yang tidak punya data tahun ke bawah
+      }
+    }
+    // ==========================================================
+
+    // DEFAULT: Logika Pengurutan Abjad 
+    // (Akan otomatis berjalan jika memilih [Pilih] atau [Masjid Besar])
     return a.indexTitle.localeCompare(b.indexTitle);    
+    
   });
 
   validRecords.forEach(record => {
