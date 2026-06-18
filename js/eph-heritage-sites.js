@@ -224,11 +224,11 @@ function populateImportantEventsData(qid) {
           if (pt) {
             eventObj.time = pt;
           } else if (st && et) {
-            eventObj.time = `${st} – ${et}`;
+            eventObj.time = `${st}–${et}`;
           } else if (st) {
-            eventObj.time = `Mulai ${st}`;
+eventObj.time = `${st} (dimulai)`; // Mengubah format mulai
           } else if (et) {
-            eventObj.time = `Selesai ${et}`;
+eventObj.time = `${et} (diselesaikan)`; // Mengubah format selesai
           }
 
           let isDuplicate = record.events.some(e => e.label === eventObj.label && e.time === eventObj.time);
@@ -691,7 +691,7 @@ let type = DESIGNATION_TYPES[designationQid];
   // ====================================================================
   // PLACEHOLDER ARSIP
   // ====================================================================
-  let arsipHtml = `<div id="arsip-container-${qid}" class="loading"><div class="loader"></div></div>`;
+  let arsipHtml = `<div id="arsip-container-${qid}" class="loading"><div class="loader" style="width: 20px; height: 20px; border-width: 2px; margin: 0;"></div></div>`;
 
   let panelElem = document.createElement('div');
   
