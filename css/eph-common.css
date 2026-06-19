@@ -198,7 +198,6 @@ nav li a.active {
 
 #details figure.nodata {
   height: 100px;
-  line-height: 100px;
   text-align: center;
   font-style: italic;
   color: #888;
@@ -206,7 +205,6 @@ nav li a.active {
     flex-direction: column;   /* KUNCI: Memaksa isi tersusun ke bawah */
     align-items: center;      /* Tengah horizontal */
     justify-content: center;  /* Tengah vertikal */
-    text-align: center;     
     box-sizing: border-box;
 }
 
