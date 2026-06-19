@@ -334,8 +334,8 @@ nav li a.active {
 }
 #kontrib h4 {
 font-family: "Open Sans", sans-serif;
-  font-style: oblique;    font-size: 13px;
-    color: #882222;
+  font-size: 13px;
+    color: #882222;     font-weight: 600;
 }
 
 .grid-kontrib {
