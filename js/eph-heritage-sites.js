@@ -718,9 +718,6 @@ Object.keys(record.designations)
 
     designationsHtml +=
       '<li>' +
-        '<div class="org">' +
-          `<img src="img/org_logo_${type.org.toLowerCase()}.svg">` + 
-        '</div>' +
         infoLokasiHtml + 
         infoTahunHtml +
         eventsHtmlPlaceholder + 
