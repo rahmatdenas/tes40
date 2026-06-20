@@ -697,7 +697,7 @@ let articleHtml;
     articleHtml = '<div class="article main-text loading"><div class="loader"></div></div>';
   } else {
     let namaAmanURL = encodeURIComponent(record.title);
-    let gFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfZWeSxNIBdD2Zw8aWW2PIPtuN-9nPWRtiCdhNXpkFRPwfz3A/viewform?usp=pp_url&entry.2092238618=${namaAmanURL}`;
+    let gFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSeHMSn6cwcgbZ0xx1CJ5tGXDQacYgzRZUG51STByKUROWXgmg/viewform?usp=pp_url&entry.2138396049=${namaAmanURL}`;
     
     // Pastikan href langsung mengarah ke ${gFormUrl} dan ada target="_blank"
     articleHtml = `<div class="article main-text nodata"><p>Masjid ini belum memiliki artikel. <a href="${gFormUrl}" target="_blank" rel="noopener noreferrer" class="sunting-linktambah">Tambahkan!</a></p></div>`;
