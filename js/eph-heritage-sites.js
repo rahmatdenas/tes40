@@ -97,25 +97,37 @@ function doPreProcessing() {
   processHashChange();
 }
 
+// === TAMBAHKAN FUNGSI DETEKTIF INI ===
+function tentukanKategoriKueri(inputTxt) {
+  // Jika input mengandung Surat Kabar (Q11032) atau Majalah (Q41298)
+  if (inputTxt.includes('Q11032') || inputTxt.includes('Q41298')) return 'pers';
+  
+  // Jika input mengandung Kabupaten (Q3199141) atau Kota (Q3191695)
+  if (inputTxt.includes('Q3199141') || inputTxt.includes('Q3191695')) return 'wilayah';
+  
+  // Default untuk Masjid, Stasiun, Benteng, dsb.
+  return 'general';
+}
+
 function populateProvinceTypesData() {
   let inputTxt = document.getElementById('jenis-input').value.trim();
   let provInput = document.getElementById('provinsi-input').value;
   
-  // 1. Tentukan Kueri Dasar (Reguler atau Pers)
-  let isPers = inputTxt.includes('Q11032') || inputTxt.includes('Q41298');
-  let baseQuery = isPers ? SPARQL_QUERY_0_PERS : SPARQL_QUERY_0;
+  // 1. Tentukan kategori berdasarkan input pengguna
+  let kategori = tentukanKategoriKueri(inputTxt);
   
-  // 2. Siapkan Suntikan Wilayah
+  // 2. Ambil kueri dari Kamus berdasarkan kategorinya
+  let baseQuery = KUMPULAN_KUERI_0[kategori];
+  
+  // 3. Suntikkan Dropdown Wilayah
   let wilayahClause = '';
   if (provInput === 'all') {
-    // Cari semua Provinsi di Indonesia
     wilayahClause = '{ SELECT ?provinsi WHERE { ?provinsi wdt:P31 wd:Q5098 . } }';
   } else {
-    // Cari tingkat administratif di bawah provinsi yang dipilih (Kabupaten/Kota)
     wilayahClause = `{ SELECT ?provinsi WHERE { ?provinsi wdt:P131 ${provInput} . } }`;
   }
   
-  // 3. Gabungkan semuanya
+  // 4. Rakit kueri final
   let dynamicQuery = baseQuery
     .replace('<PLACEHOLDER_WILAYAH>', wilayahClause)
     .replace('<PLACEHOLDER_JENIS>', inputTxt);
@@ -124,16 +136,10 @@ function populateProvinceTypesData() {
     dynamicQuery,
     function(result) {
       let qid = result.siteQid.value;
-      if (!(qid in Records)) {
-        Records[qid] = new Record(false);
-      }
+      if (!(qid in Records)) Records[qid] = new Record(false);
       let record = Records[qid];
 
-      if ('siteLabel' in result && result.siteLabel.value) {
-        record.title = result.siteLabel.value;
-      } else {
-        record.title = '[ERROR: No title]';
-      }
+      record.title = ('siteLabel' in result && result.siteLabel.value) ? result.siteLabel.value : '[ERROR: No title]';
 
       let provQid = result.provinsiQid ? result.provinsiQid.value : 'Q_UNKNOWN';
       let provLabel = result.provinsiLabel ? result.provinsiLabel.value : 'Wilayah Tidak Tercatat';
@@ -142,19 +148,12 @@ function populateProvinceTypesData() {
         ProvinceIndex[provQid] = new ProvinceIndexEntry();
         ProvinceIndex[provQid].name = provLabel; 
       }
-
-      if (!(provQid in record.designations)) {
-        record.designations[provQid] = provLabel; 
-      }
+      if (!(provQid in record.designations)) record.designations[provQid] = provLabel; 
       
       record.areaTags.add(provQid);
       
-      if ('p131LokasiLabel' in result && result.p131LokasiLabel.value) {
-        record.lokasiSpesifik = result.p131LokasiLabel.value;
-      }
-      if ('p131Image' in result && result.p131Image.value) {
-        record.lokasiImage = extractImageFilename(result.p131Image);
-      }
+      if ('p131LokasiLabel' in result && result.p131LokasiLabel.value) record.lokasiSpesifik = result.p131LokasiLabel.value;
+      if ('p131Image' in result && result.p131Image.value) record.lokasiImage = extractImageFilename(result.p131Image);
       
       if (!record.tahunBerdiri && result.tahunBerdiriMentah && result.tahunBerdiriMentah.value) {
         let precision = result.tahunPresisi ? result.tahunPresisi.value : 9;
@@ -173,10 +172,13 @@ function populateCoordinatesData() {
   let daftarQid = Object.keys(Records).map(id => 'wd:' + id);
   if (daftarQid.length === 0) return Promise.resolve();
 
-  // === WESEL PERCABANGAN KOORDINAT ===
   let inputTxt = document.getElementById('jenis-input').value.trim();
-  let isPers = inputTxt.includes('Q11032') || inputTxt.includes('Q41298');
-  let templateKueri = isPers ? SPARQL_QUERY_1_PERS_TEMPLATE : SPARQL_QUERY_1_TEMPLATE;
+  
+  // 1. Tentukan kategori
+  let kategori = tentukanKategoriKueri(inputTxt);
+  
+  // 2. Ambil kueri koordinat dari Kamus
+  let templateKueri = KUMPULAN_KUERI_1[kategori];
 
   let kelompokCicilan = potongJadiKelompok(daftarQid, 1000);
 
