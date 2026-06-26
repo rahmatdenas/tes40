@@ -702,7 +702,13 @@ optgroup option { padding-left: 10px; }
     transform: translateY(-50%);
 }
 
+.leaflet-top, .leaflet-bottom {
+       width: 100%;
+}
+
 .leaflet-top .leaflet-control-attribution {
+text-align: center;
+       width: 100%;
 }
 /* === DESAIN IKON LINGKARAN GPS (CROSSHAIRS) === */
 .ikon-gps-custom {
