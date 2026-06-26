@@ -900,13 +900,11 @@ function renderHistoricalImagesInPanel(qid) {
 
   // Render Pemandangan Dalam
   if (record.interiorImage) {
-    html += '<h3 style="margin: 15px 0 5px; font-size: 15px; color:#555;">Pemandangan Dalam</h3>';
     html += buildImageBlock(record.interiorImage, 'Pemandangan di dalam');
   }
   
   // Render Pemandangan Sekitar
   if (record.vicinityImages && record.vicinityImages.length > 0) {
-    html += '<h3 style="margin: 15px 0 5px; font-size: 15px; color:#555;">Lingkungan Sekitar</h3>';
     record.vicinityImages.forEach(imgObj => {
       html += buildImageBlock(imgObj, 'Objek di sekitar');
     });
@@ -914,7 +912,7 @@ function renderHistoricalImagesInPanel(qid) {
 
   // === RENDER TAUTAN WIKIMEDIA COMMONS ===
   if (record.commonsCat) {
-    html += '<h2 style="margin: 25px 0 10px;">Galeri lainnya</h2>';
+    html += '<h2 style="margin-bottom:10px;">Galeri lainnya</h2>';
     html += 
       '<p class="wikipedia-link" style="margin-bottom: 0;">' +
         `<a href="https://commons.wikimedia.org/wiki/Category:${encodeURIComponent(record.commonsCat)}" target="_blank">` +
