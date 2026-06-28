@@ -213,7 +213,7 @@ if (cek(['Q40080'])) return 'Pantai';
 function dapatkanPropertiWikidata(namaKlaster) {
   const pakaiP276 = [
     'Hidangan', 'Pakaian', 'Tari dan pertunjukan', 'Ritual dan upacara', 
-    'Budaya rakyat', 'Lukisan', 'Lontar', 'Naskah', 'Artefak'
+    'Budaya rakyat', 'Lukisan', 'Lontar', 'Naskah', 'Artefak', 'Gempa bumi'
   ];
   if (pakaiP276.includes(namaKlaster)) return 'P276'; 
   
